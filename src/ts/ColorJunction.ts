@@ -1,16 +1,28 @@
 // Type
-import { Color } from "../type"
+import { Color } from "./type"
 
 // Interface
-import { Piece } from "../interface"
+import { Piece } from "./interface"
 
 export class ColorJunction {
   height = 0
   width = 0
+  grid: Piece[][] = []
 
   constructor(height: number, width: number) {
     this.height = height
-    this.width = width
+    this.width = width;
+
+    [...Array(height)].map(() => {
+      let x: Piece[] = [];
+      [...Array(width)].map(() => {
+        x.push({
+          color: this.getRandomColor(),
+          shape: "blank"
+        })
+      })
+      this.grid.push(x)
+    })
   }
 
   static hexConverter(color: Color) {
@@ -40,6 +52,10 @@ export class ColorJunction {
       default:
         return "blue"
     }
+  }
+
+  get getGrid() {
+    return this.grid
   }
 
   generateDummy(): Piece[][] {

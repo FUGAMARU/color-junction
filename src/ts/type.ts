@@ -1,7 +1,8 @@
 export type Color = "purple" | "yellow" | "green" | "blue"
 
 export type Shape =
-  "square" // 完全な四角形
+  "blank" // 空欄
+  | "square" // 完全な四角形
   | "rounded" // 独立していて全て角丸
   | "topRounded" // 上だけ角丸
   | "bottomRounded" // 下だけ角丸

@@ -2,10 +2,10 @@
 import { Box, Flex } from "@chakra-ui/react"
 
 // Class
-import { ColorJunction } from "./class/ColorJunction"
+import { ColorJunction } from "./ts/ColorJunction"
 
 // Type
-import { Shape, Color } from "./type"
+import { Shape, Color } from "./ts/type"
 
 interface Props {
   shape: Shape,
@@ -14,6 +14,12 @@ interface Props {
 
 const Tile = (props: Props) => {
   switch (props.shape) {
+    case "blank":
+      return (
+        <Flex w="15px" h="15px" justify="center" align="center" bg="#e3e3e3">
+
+        </Flex>
+      )
     case "square":
       return (
         <Flex w="15px" h="15px" justify="center" align="center" bg="#e3e3e3">

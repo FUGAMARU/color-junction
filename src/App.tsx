@@ -8,10 +8,10 @@ import { Box, Flex, VStack, HStack } from "@chakra-ui/react"
 import Tile from "./Tile"
 
 // Class
-import { ColorJunction } from "./class/ColorJunction"
+import { ColorJunction } from "./ts/ColorJunction"
 
 // Interface
-import { Piece } from "./interface"
+import { Piece } from "./ts/interface"
 
 const App = () => {
   const height = 15
@@ -21,6 +21,7 @@ const App = () => {
 
   useEffect(() => {
     const colorJunction = new ColorJunction(height, width)
+    console.log(colorJunction.getGrid)
     setGrid(colorJunction.demo())
   }, [])
 
