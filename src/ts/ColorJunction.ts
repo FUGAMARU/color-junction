@@ -276,7 +276,7 @@ export class ColorJunction {
     return grid
   }
 
-  static hexConverter(color: Color) {
+  convertToHex(color: Color) {
     switch (color) {
       case "purple":
         return "#951350"

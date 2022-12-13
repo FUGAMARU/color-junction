@@ -1,11 +1,8 @@
 // Chakra UI Components
-import { Box, Flex } from "@chakra-ui/react"
-
-// Class
-import { ColorJunction } from "./ts/ColorJunction"
+import { Box } from "@chakra-ui/react"
 
 // Type
-import { Shape, Color } from "./ts/type"
+import { Shape } from "./ts/type"
 
 interface Props {
   shape: Shape,
@@ -16,75 +13,51 @@ const Tile = (props: Props) => {
   switch (props.shape) {
     case "blank":
       return (
-        <Flex w="15px" h="15px" justify="center" align="center" bg="#e3e3e3">
-          <Box h="14.0px" w="14.0px" bg={props.color} borderRadius="5px" />
-        </Flex>
+        <Box h="15.0px" w="15.0px" bg="black" />
       )
     case "square":
       return (
-        <Flex w="15px" h="15px" justify="center" align="center" bg="#e3e3e3">
-          <Box h="14.3px" w="14.3px" bg={props.color} />
-        </Flex>
+        <Box h="15px" w="15px" bg={props.color} />
       )
     case "rounded":
       return (
-        <Flex w="15px" h="15px" justify="center" align="center" bg="#e3e3e3">
-          <Box h="14.0px" w="14.0px" bg={props.color} borderRadius="5px" />
-        </Flex>
+        <Box h="15.0px" w="15.0px" bg={props.color} borderRadius="5px" />
       )
     case "topRounded":
       return (
-        <Flex w="15px" h="15px" justify="center" align="center" bg="#e3e3e3">
-          <Box h="14.3px" w="14.3px" bg={props.color} borderTopRadius="5px" />
-        </Flex>
+        <Box h="15px" w="15px" bg={props.color} borderTopRadius="5px" />
       )
     case "bottomRounded":
       return (
-        <Flex w="15px" h="15px" justify="center" align="center" bg="#e3e3e3">
-          <Box h="14.3px" w="14.3px" bg={props.color} borderBottomRadius="5px" />
-        </Flex>
+        <Box h="15px" w="15px" bg={props.color} borderBottomRadius="5px" />
       )
     case "leftRounded":
       return (
-        <Flex w="15px" h="15px" justify="center" align="center" bg="#e3e3e3">
-          <Box h="14.3px" w="14.3px" bg={props.color} borderLeftRadius="5px" />
-        </Flex>
+        <Box h="15px" w="15px" bg={props.color} borderLeftRadius="5px" />
       )
     case "rightRounded":
       return (
-        <Flex w="15px" h="15px" justify="center" align="center" bg="#e3e3e3">
-          <Box h="14.3px" w="14.3px" bg={props.color} borderRightRadius="5px" />
-        </Flex>
+        <Box h="15px" w="15px" bg={props.color} borderRightRadius="5px" />
       )
     case "topLeftRounded":
       return (
-        <Flex w="15px" h="15px" justify="center" align="center" bg="#e3e3e3">
-          <Box h="14.3px" w="14.3px" bg={props.color} borderTopLeftRadius="5px" />
-        </Flex>
+        <Box h="15px" w="15px" bg={props.color} borderTopLeftRadius="5px" />
       )
     case "topRightRounded":
       return (
-        <Flex w="15px" h="15px" justify="center" align="center" bg="#e3e3e3">
-          <Box h="14.3px" w="14.3px" bg={props.color} borderTopRightRadius="5px" />
-        </Flex>
+        <Box h="15px" w="15px" bg={props.color} borderTopRightRadius="5px" />
       )
     case "bottomLeftRounded":
       return (
-        <Flex w="15px" h="15px" justify="center" align="center" bg="#e3e3e3">
-          <Box h="14.3px" w="14.3px" bg={props.color} borderBottomLeftRadius="5px" />
-        </Flex>
+        <Box h="15px" w="15px" bg={props.color} borderBottomLeftRadius="5px" />
       )
     case "bottomRightRounded":
       return (
-        <Flex w="15px" h="15px" justify="center" align="center" bg="#e3e3e3">
-          <Box h="14.3px" w="14.3px" bg={props.color} borderBottomRightRadius="5px" />
-        </Flex>
+        <Box h="15px" w="15px" bg={props.color} borderBottomRightRadius="5px" />
       )
     default:
       return (
-        <Flex w="15px" h="15px" justify="center" align="center" bg="#e3e3e3">
-          <Box h="14.0px" w="14.0px" bg="black" borderRadius="5px" />
-        </Flex>
+        <Box h="15.0px" w="15.0px" bg="black" borderRadius="5px" />
       )
   }
 }
