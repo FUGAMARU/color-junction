@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 
 // Chakra UI Components
-import { Box, Flex, VStack, HStack } from "@chakra-ui/react"
+import { Box, VStack, HStack } from "@chakra-ui/react"
 
 // Custom Components
 import Tile from "./Tile"
@@ -22,20 +22,20 @@ const App = () => {
   useEffect(() => {
     const colorJunction = new ColorJunction(height, width)
     console.log(colorJunction.getGrid)
-    setGrid(colorJunction.demo())
+    setGrid(colorJunction.getGrid)
   }, [])
 
   return (
     <Box>
       <Box w={`${15.2 * width}px`} h={`${15.2 * height}px`} p="0.2px" bg="#e3e3e3" overflow="hidden">
         <VStack spacing={0} mt="1.5px">
-          {grid?.map((line, idx) => {
+          {grid?.map((line, lineIdx) => {
             return (
-              <HStack spacing={0}>
+              <HStack key={lineIdx} spacing={0}>
                 {
-                  line.map((piece, idx) => {
+                  line.map((piece, pieceIdx) => {
                     return (
-                      <Tile key={idx} shape={piece.shape} color={piece.color} />
+                      <Tile key={`${lineIdx},${pieceIdx}`} shape={piece.shape} color={ColorJunction.hexConverter(piece.color)} />
                     )
                   })
                 }

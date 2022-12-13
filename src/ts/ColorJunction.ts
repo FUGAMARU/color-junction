@@ -5,13 +5,33 @@ import { Color } from "./type"
 import { Piece } from "./interface"
 
 export class ColorJunction {
-  height = 0
-  width = 0
-  grid: Piece[][] = []
+  height = 0 // 縦方向のブロック数
+  width = 0 // 横方向のブロック数
+  grid: Piece[][] = [] // 盤面データー
 
   constructor(height: number, width: number) {
     this.height = height
     this.width = width;
+
+    this.grid = this.judgeShape(this.generateRandomlyColoredGrid(height, width), height, width)
+  }
+
+  private getRandomColor(): Color {
+    const rand = Math.floor(Math.random() * (4 - 0))
+    switch (rand) {
+      case 0:
+        return "purple"
+      case 1:
+        return "yellow"
+      case 2:
+        return "green"
+      default:
+        return "blue"
+    }
+  }
+
+  private generateRandomlyColoredGrid(height: number, width: number) {
+    const forReturn: Piece[][] = [];
 
     [...Array(height)].map(() => {
       let x: Piece[] = [];
@@ -21,8 +41,239 @@ export class ColorJunction {
           shape: "blank"
         })
       })
-      this.grid.push(x)
+      forReturn.push(x)
     })
+
+    return forReturn
+  }
+
+  private judgeShape(randomColorGrid: Piece[][], height: number, width: number) {
+    const grid = randomColorGrid.concat()
+    const visited = [...Array(height)].map(_ => Array(width).fill(false))
+
+    const dfs = (x: number, y: number) => {
+      if (x < 0 || y < 0 || x > height - 1 || y > width - 1 || visited[x][y]) return
+
+      const color = grid[x][y].color
+
+      const setShape = (x: number, y: number) => {
+        // 左上
+        if (x === 0 && y === 0) {
+          if (grid[x + 1][y].color === color && grid[x][y + 1].color === color) {
+            grid[x][y].shape = "topLeftRounded"
+            return
+          } else if (grid[x][y + 1].color === color && grid[x + 1][y].color !== color) {
+            grid[x][y].shape = "leftRounded"
+            return
+          } else if (grid[x + 1][y].color === color && grid[x][y + 1].color !== color) {
+            grid[x][y].shape = "topRounded"
+            return
+          } else {
+            grid[x][y].shape = "rounded"
+            return
+          }
+        }
+
+        // 右下
+        if (x === height - 1 && y === width - 1) {
+          if (grid[x - 1][y].color === color && grid[x][y - 1].color === color) {
+            grid[x][y].shape = "bottomRightRounded"
+            return
+          } else if (grid[x][y - 1].color === color && grid[x - 1][y].color !== color) {
+            grid[x][y].shape = "rightRounded"
+            return
+          } else if (grid[x - 1][y].color === color && grid[x][y - 1].color !== color) {
+            grid[x][y].shape = "bottomRounded"
+            return
+          } else {
+            grid[x][y].shape = "rounded"
+            return
+          }
+        }
+
+        // 右上
+        if (x === 0 && y === width - 1) {
+          if (grid[x + 1][y].color === color && grid[x][y - 1].color === color) {
+            grid[x][y].shape = "topRightRounded"
+            return
+          } else if (grid[x][y - 1].color === color && grid[x + 1][y].color !== color) {
+            grid[x][y].shape = "rightRounded"
+            return
+          } else if (grid[x + 1][y].color === color && grid[x][y - 1].color !== color) {
+            grid[x][y].shape = "topRounded"
+            return
+          } else {
+            grid[x][y].shape = "rounded"
+            return
+          }
+        }
+
+        // 左下
+        if (x === height - 1 && y === 0) {
+          if (grid[x - 1][y].color === color && grid[x][y + 1].color === color) {
+            grid[x][y].shape = "bottomLeftRounded"
+            return
+          } else if (grid[x][y + 1].color === color && grid[x - 1][y].color !== color) {
+            grid[x][y].shape = "leftRounded"
+            return
+          } else if (grid[x - 1][y].color === color && grid[x][y + 1].color !== color) {
+            grid[x][y].shape = "bottomRounded"
+            return
+          } else {
+            grid[x][y].shape = "rounded"
+            return
+          }
+        }
+
+        // 上辺
+        if (x === 0) {
+          if (grid[x][y + 1].color === color && grid[x][y - 1].color === color) {
+            grid[x][y].shape = "square"
+            return
+          } else if (grid[x + 1][y].color === color && grid[x][y - 1].color === color) {
+            grid[x][y].shape = "topRightRounded"
+            return
+          } else if (grid[x][y + 1].color === color && grid[x + 1][y].color === color) {
+            grid[x][y].shape = "topLeftRounded"
+            return
+          } else if (grid[x][y - 1].color === color && grid[x][y + 1].color !== color) {
+            grid[x][y].shape = "rightRounded"
+            return
+          } else if (grid[x][y + 1].color === color && grid[x][y - 1].color !== color) {
+            grid[x][y].shape = "leftRounded"
+            return
+          } else if (grid[x + 1][y].color === color) {
+            grid[x][y].shape = "topRounded"
+            return
+          } else {
+            grid[x][y].shape = "rounded"
+            return
+          }
+        }
+
+        // 下辺
+        if (x === height - 1) {
+          if (grid[x][y + 1].color === color && grid[x][y - 1].color === color) {
+            grid[x][y].shape = "square"
+            return
+          } else if (grid[x - 1][y].color === color && grid[x][y - 1].color === color) {
+            grid[x][y].shape = "bottomRightRounded"
+            return
+          } else if (grid[x][y + 1].color === color && grid[x - 1][y].color === color) {
+            grid[x][y].shape = "bottomLeftRounded"
+            return
+          } else if (grid[x][y - 1].color === color && grid[x][y + 1].color !== color) {
+            grid[x][y].shape = "rightRounded"
+            return
+          } else if (grid[x][y + 1].color === color && grid[x][y - 1].color !== color) {
+            grid[x][y].shape = "leftRounded"
+            return
+          } else if (grid[x - 1][y].color === color) {
+            grid[x][y].shape = "bottomRounded"
+            return
+          } else {
+            grid[x][y].shape = "rounded"
+            return
+          }
+        }
+
+        // 左辺
+        if (y === 0) {
+          if (grid[x + 1][y].color === color && grid[x - 1][y].color === color) {
+            grid[x][y].shape = "square"
+            return
+          } else if (grid[x + 1][y].color === color && grid[x][y + 1].color === color) {
+            grid[x][y].shape = "topLeftRounded"
+            return
+          } else if (grid[x][y + 1].color === color && grid[x - 1][y].color === color) {
+            grid[x][y].shape = "bottomLeftRounded"
+            return
+          } else if (grid[x][y + 1].color === color) {
+            grid[x][y].shape = "leftRounded"
+            return
+          } else if (grid[x + 1][y].color === color && grid[x - 1][y].color !== color) {
+            grid[x][y].shape = "topRounded"
+            return
+          } else if (grid[x - 1][y].color === color && grid[x + 1][y].color !== color) {
+            grid[x][y].shape = "bottomRounded"
+            return
+          } else {
+            grid[x][y].shape = "rounded"
+            return
+          }
+        }
+
+        // 右辺
+        if (y === width - 1) {
+          if (grid[x + 1][y].color === color && grid[x - 1][y].color === color) {
+            grid[x][y].shape = "square"
+            return
+          } else if (grid[x + 1][y].color === color && grid[x][y - 1].color === color) {
+            grid[x][y].shape = "topRightRounded"
+            return
+          } else if (grid[x][y - 1].color === color && grid[x - 1][y].color === color) {
+            grid[x][y].shape = "bottomRightRounded"
+            return
+          } else if (grid[x][y - 1].color === color) {
+            grid[x][y].shape = "rightRounded"
+            return
+          } else if (grid[x + 1][y].color === color && grid[x - 1][y].color !== color) {
+            grid[x][y].shape = "topRounded"
+            return
+          } else if (grid[x - 1][y].color === color && grid[x + 1][y].color !== color) {
+            grid[x][y].shape = "bottomRounded"
+            return
+          } else {
+            grid[x][y].shape = "rounded"
+            return
+          }
+        }
+
+        // その他
+        if ((grid[x + 1][y].color === color && grid[x - 1][y].color === color) || (grid[x][y + 1].color === color && grid[x][y - 1].color === color)) {
+          grid[x][y].shape = "square"
+          return
+        } else if (grid[x - 1][y].color === color && grid[x][y - 1].color === color && grid[x + 1][y].color !== color && grid[x][y + 1].color !== color) {
+          grid[x][y].shape = "bottomRightRounded"
+          return
+        } else if (grid[x - 1][y].color === color && grid[x][y + 1].color === color && grid[x + 1][y].color !== color && grid[x][y - 1].color !== color) {
+          grid[x][y].shape = "bottomLeftRounded"
+          return
+        } else if (grid[x + 1][y].color === color && grid[x][y - 1].color === color && grid[x - 1][y].color !== color && grid[x][y + 1].color !== color) {
+          grid[x][y].shape = "topRightRounded"
+          return
+        } else if (grid[x + 1][y].color === color && grid[x][y + 1].color === color && grid[x - 1][y].color !== color && grid[x][y - 1].color !== color) {
+          grid[x][y].shape = "topLeftRounded"
+          return
+        } else if (grid[x][y - 1].color === color && grid[x][y + 1].color !== color && grid[x + 1][y].color !== color && grid[x - 1][y].color !== color) {
+          grid[x][y].shape = "rightRounded"
+          return
+        } else if (grid[x][y + 1].color === color && grid[x][y - 1].color !== color && grid[x + 1][y].color !== color && grid[x - 1][y].color !== color) {
+          grid[x][y].shape = "leftRounded"
+          return
+        } else if (grid[x - 1][y].color === color && grid[x][y + 1].color !== color && grid[x + 1][y].color !== color && grid[x][y - 1].color !== color) {
+          grid[x][y].shape = "bottomRounded"
+          return
+        } else if (grid[x + 1][y].color === color && grid[x][y + 1].color !== color && grid[x - 1][y].color !== color && grid[x][y - 1].color !== color) {
+          grid[x][y].shape = "topRounded"
+          return
+        } else {
+          grid[x][y].shape = "rounded"
+          return
+        }
+      }
+
+      setShape(x, y)
+      visited[x][y] = true
+
+      dfs(x - 1, y) //上
+      dfs(x, y + 1) //右
+      dfs(x + 1, y) //下
+      dfs(x, y - 1) //左
+    }
+
+    dfs(0, 0)
+    return grid
   }
 
   static hexConverter(color: Color) {
@@ -40,965 +291,7 @@ export class ColorJunction {
     }
   }
 
-  private getRandomColor(): Color {
-    const rand = Math.floor(Math.random() * (4 - 0))
-    switch (rand) {
-      case 0:
-        return "purple"
-      case 1:
-        return "yellow"
-      case 2:
-        return "green"
-      default:
-        return "blue"
-    }
-  }
-
   get getGrid() {
     return this.grid
-  }
-
-  generateDummy(): Piece[][] {
-    return [...Array(this.height)].map(_ => Array(this.width).fill({
-      color: this.getRandomColor(),
-      shape: "rounded"
-    }))
-  }
-
-  demo(): Piece[][] {
-    return (
-      [
-        [
-          {
-            "color": "green",
-            "shape": "topLeftRounded"
-          },
-          {
-            "color": "green",
-            "shape": "square"
-          },
-          {
-            "color": "green",
-            "shape": "rightRounded"
-          },
-          {
-            "color": "blue",
-            "shape": "leftRounded"
-          },
-          {
-            "color": "blue",
-            "shape": "square"
-          },
-          {
-            "color": "blue",
-            "shape": "topRightRounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          }
-        ],
-        [
-          {
-            "color": "green",
-            "shape": "square"
-          },
-          {
-            "color": "green",
-            "shape": "square"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "bottomLeftRounded"
-          },
-          {
-            "color": "blue",
-            "shape": "square"
-          },
-          {
-            "color": "blue",
-            "shape": "rightRounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          }
-        ],
-        [
-          {
-            "color": "green",
-            "shape": "square"
-          },
-          {
-            "color": "green",
-            "shape": "bottomRightRounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "bottomRounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          }
-        ],
-        [
-          {
-            "color": "green",
-            "shape": "square"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          }
-        ],
-        [
-          {
-            "color": "green",
-            "shape": "bottomRounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          }
-        ],
-        [
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          }
-        ],
-        [
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          },
-          {
-            "color": "green",
-            "shape": "rounded"
-          }
-        ],
-        [
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          }
-        ],
-        [
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          }
-        ],
-        [
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          }
-        ],
-        [
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          },
-          {
-            "color": "purple",
-            "shape": "rounded"
-          }
-        ],
-        [
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          }
-        ],
-        [
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          }
-        ],
-        [
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          },
-          {
-            "color": "yellow",
-            "shape": "rounded"
-          }
-        ],
-        [
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          },
-          {
-            "color": "blue",
-            "shape": "rounded"
-          }
-        ]
-      ]
-    )
   }
 }
