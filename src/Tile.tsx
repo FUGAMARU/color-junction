@@ -6,18 +6,20 @@ import { Shape } from "./ts/type"
 
 interface Props {
   shape: Shape,
-  color: string
+  color: string,
+  onClick?: VoidFunction
 }
 
 const Tile = (props: Props) => {
+
   switch (props.shape) {
     case "blank":
       return (
-        <Box h="15.0px" w="15.0px" bg="black" />
+        <Box h="15.0px" w="15.0px" bg="#e3e3e3" />
       )
     case "square":
       return (
-        <Box h="15px" w="15px" bg={props.color} />
+        <Box h="15px" w="15px" bg={props.color} onClick={props.onClick} />
       )
     case "rounded":
       return (
@@ -25,35 +27,35 @@ const Tile = (props: Props) => {
       )
     case "topRounded":
       return (
-        <Box h="15px" w="15px" bg={props.color} borderTopRadius="5px" />
+        <Box h="15px" w="15px" bg={props.color} borderTopRadius="5px" onClick={props.onClick} />
       )
     case "bottomRounded":
       return (
-        <Box h="15px" w="15px" bg={props.color} borderBottomRadius="5px" />
+        <Box h="15px" w="15px" bg={props.color} borderBottomRadius="5px" onClick={props.onClick} />
       )
     case "leftRounded":
       return (
-        <Box h="15px" w="15px" bg={props.color} borderLeftRadius="5px" />
+        <Box h="15px" w="15px" bg={props.color} borderLeftRadius="5px" onClick={props.onClick} />
       )
     case "rightRounded":
       return (
-        <Box h="15px" w="15px" bg={props.color} borderRightRadius="5px" />
+        <Box h="15px" w="15px" bg={props.color} borderRightRadius="5px" onClick={props.onClick} />
       )
     case "topLeftRounded":
       return (
-        <Box h="15px" w="15px" bg={props.color} borderTopLeftRadius="5px" />
+        <Box h="15px" w="15px" bg={props.color} borderTopLeftRadius="5px" onClick={props.onClick} />
       )
     case "topRightRounded":
       return (
-        <Box h="15px" w="15px" bg={props.color} borderTopRightRadius="5px" />
+        <Box h="15px" w="15px" bg={props.color} borderTopRightRadius="5px" onClick={props.onClick} />
       )
     case "bottomLeftRounded":
       return (
-        <Box h="15px" w="15px" bg={props.color} borderBottomLeftRadius="5px" />
+        <Box h="15px" w="15px" bg={props.color} borderBottomLeftRadius="5px" onClick={props.onClick} />
       )
     case "bottomRightRounded":
       return (
-        <Box h="15px" w="15px" bg={props.color} borderBottomRightRadius="5px" />
+        <Box h="15px" w="15px" bg={props.color} borderBottomRightRadius="5px" onClick={props.onClick} />
       )
     default:
       return (
