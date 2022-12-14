@@ -5,7 +5,7 @@ import { Color } from "../types/Color"
 import { Tile, Grid } from "../types/Tile"
 
 // Common Functions
-import { rotateLeft, rotateRight, moveBlanksToEnd } from "./commonFunctions"
+import { rotateLeft, rotateRight, moveBlanksToEnd, moveBlankRowsToEnd } from "./commonFunctions"
 
 export const generateRandomizedGrid = (height: number, width: number) => {
   const coloredGrid = generateColoredGrid(height, width) // 色だけランダムに振り分けたグリッド
@@ -20,14 +20,15 @@ export const removeClump = (grid: Grid, x: number, y: number) => {
 
   // クリックされた塊の削除
   sequentialTiles.forEach((tileXY) => {
-    tmpGrid[tileXY[0]][tileXY[1]].shape = "blank"
     tmpGrid[tileXY[0]][tileXY[1]].color = "blank"
+    tmpGrid[tileXY[0]][tileXY[1]].shape = "blank"
   })
 
   // blankを詰める
   const rightRotatedGrid = rotateRight(tmpGrid)
-  const squeezedGrid = rightRotatedGrid.map(line => moveBlanksToEnd(line))
-  const leftRotatedGrid = rotateLeft(squeezedGrid)
+  const bottomPadded = moveBlanksToEnd(rightRotatedGrid) // 上から下に詰める
+  const leftPadded = moveBlankRowsToEnd(bottomPadded) // 右から左に詰める
+  const leftRotatedGrid = rotateLeft(leftPadded)
 
   tmpGrid = judgeShape(leftRotatedGrid)
 
@@ -47,8 +48,8 @@ const generateColoredGrid = (height: number, width: number) => {
     let x: Tile[] = [];
     [...Array(width)].map(() => {
       x.push({
+        color: getRandomColor(),
         shape: "blank",
-        color: getRandomColor()
       })
     })
     result.push(x)

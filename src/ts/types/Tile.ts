@@ -1,10 +1,10 @@
 // Type
-import { Shape } from "./Shape"
 import { Color } from "./Color"
+import { Shape } from "./Shape"
 
 export type Tile = {
-  shape: Shape,
   color: Color,
+  shape: Shape,
 }
 
 export type Grid = Tile[][]
