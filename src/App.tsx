@@ -11,6 +11,7 @@ import Grid from "./Grid"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faRotateLeft, faInfo } from "@fortawesome/free-solid-svg-icons"
 
+const Button = (props: { onClick: VoidFunction, children: string }) => <Box mt="5px" px="2px" fontSize="5px" _hover={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }} cursor="pointer" onClick={props.onClick}>{props.children}</Box>
 const Link = (props: { url: string, children: string }) => <Box as="span" textDecoration="underline" _hover={{ color: "#cb94e3" }}><a href={props.url} target="_blank" rel="noopener">{props.children}</a></Box>
 
 const App = () => {
@@ -29,8 +30,9 @@ const App = () => {
           <Grid grid={grid} handleTileClick={handleTileClick} />
           {
             gameState !== "Playing" && !!!isInfoOpen ?
-              <Flex h="100%" w="100%" position="absolute" top="0" left="0" justify="center" align="center" bg="whiteAlpha.800">
+              <Flex h="100%" w="100%" position="absolute" top="0" left="0" flexDirection="column" justify="center" align="center" bg="whiteAlpha.800">
                 <Text fontSize="20px" fontWeight="regular" textAlign="center">{gameState}</Text>
+                <Button onClick={handleResetButtonClick}>Click to retry</Button>
               </Flex>
               : null
           }
@@ -40,10 +42,10 @@ const App = () => {
                 <Text fontSize="20px" fontWeight="semibold">Color Junction</Text>
                 <Box fontSize="13px" lineHeight="18px">
                   <Text>This game is played by erasing clumps of two or more pieces of the same color attached to each other, and the game is completed when all the pieces are finally erased.</Text>
-                  <Text my="5px">Using React, the mini-game "Color Junction" that was playable on <Link url="https://en.wikipedia.org/wiki/IGoogle">iGoogle</Link> which ended in 2013, was revived in 2022.</Text>
+                  <Text>Using React, the mini-game "Color Junction" that was playable on <Link url="https://en.wikipedia.org/wiki/IGoogle">iGoogle</Link> which ended in 2013, was revived in 2022.</Text>
                   <Text>Developer: <Link url="https://fugamaru.com/">FUGAMARU</Link></Text>
                 </Box>
-                <Box mt="3px" px="2px" fontSize="5px" _hover={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }} cursor="pointer" onClick={closeInfo}>Click to Close</Box>
+                <Button onClick={closeInfo}>Click to close</Button>
               </Flex>
               : null
           }
