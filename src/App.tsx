@@ -2,10 +2,14 @@
 import { useColorJunction } from "./useColorJunction"
 
 // Chakra UI Components
-import { Box, Flex, VStack, HStack } from "@chakra-ui/react"
+import { Box, Flex, Text, VStack, HStack } from "@chakra-ui/react"
 
 // Custom Components
 import Tile from "./Tile"
+
+// Font Awesome
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faRotateLeft, faInfo } from "@fortawesome/free-solid-svg-icons"
 
 // Type
 import { hex } from "./ts/types/Color"
@@ -45,7 +49,17 @@ const App = () => {
           })}
         </VStack>
       </Box>
-      <Box w={`${18.2 * width}px`} h="19px" bg="#cccccc" borderTop="solid 1px #888888">Footer</Box>
+      <Flex w={`${18.2 * width}px`} h="19px" px="3px" justify="space-between" align="center" bg="#cccccc" borderTop="solid 1px #888888">
+        <Flex align="center">
+          <Flex h="14px" w="14px" mr="1px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" >
+            <FontAwesomeIcon icon={faRotateLeft} color="white" width="10px" height="10px"></FontAwesomeIcon>
+          </Flex>
+          <Flex h="14px" w="14px" ml="1px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" >
+            <FontAwesomeIcon icon={faInfo} color="white" width="3.5px" height="3.5px"></FontAwesomeIcon>
+          </Flex>
+        </Flex>
+        <Text fontSize="12px" fontWeight="light">Pieces left: 0</Text>
+      </Flex>
     </Box>
   )
 }
