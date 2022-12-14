@@ -11,6 +11,7 @@ interface Props {
 }
 
 const Tile = (props: Props) => {
+  console.log("%cTile.tsx", "color:white; border:solid 1px #0188d1; padding:1px 4px; border-radius:4px;", "Rendered")
 
   switch (props.shape) {
     case "blank":

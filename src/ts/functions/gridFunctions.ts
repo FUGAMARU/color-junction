@@ -33,9 +33,9 @@ export const removeClump = (grid: Grid, x: number, y: number) => {
   return shapeJudged
 }
 
-export const getPieces = (grid: Grid) => grid.flat().filter(tile => tile.color !== "blank").length
-
 export const getGameState = (grid: Grid): GameState => {
+  if (!!!grid.length) return "Playing"
+
   const { height, width } = getGridSize(grid)
   const flatGrid = grid.flat()
 
@@ -47,6 +47,8 @@ export const getGameState = (grid: Grid): GameState => {
 
   return "Game Over!"
 }
+
+export const getPieces = (grid: Grid) => grid.length ? grid.flat().filter(tile => tile.color !== "blank").length : 0
 
 const colorsForRandomize: Color[] = ["purple", "yellow", "green", "blue"]
 const getRandomColor = () => {

@@ -1,12 +1,12 @@
 // React Hooks
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo, useCallback } from "react"
 
 // Type
 import { Grid } from "./ts/types/Tile"
 import { GameState } from "./ts/types/GameState"
 
 // Grid Functions
-import { generateRandomizedGrid, removeClump, getPieces, getGameState } from "./ts/functions/gridFunctions"
+import { generateRandomizedGrid, removeClump, getGameState, getPieces } from "./ts/functions/gridFunctions"
 
 interface Props {
   height: number,
@@ -14,28 +14,24 @@ interface Props {
 }
 
 export const useColorJunction = (props: Props) => {
+  console.log("%cuseColorJunction.tsx", "color:white; border:solid 1px #0188d1; padding:1px 4px; border-radius:4px;", "Rendered")
+
   const [grid, setGrid] = useState<Grid>([])
-  const [pieces, setPieces] = useState(0)
-  const [gameState, setGameState] = useState<GameState>("Playing")
+  const gameState = useMemo<GameState>(() => getGameState(grid), [grid])
+  const piecesLeft = useMemo(() => getPieces(grid), [grid])
 
   useEffect(() => {
     setGrid(generateRandomizedGrid(props.height, props.width))
   }, [])
 
-  useEffect(() => {
-    if (!!!grid.length) return
-    setGameState(getGameState(grid))
-    setPieces(getPieces(grid))
-  }, [grid])
-
-  const handleTileClick = (x: number, y: number) => {
+  const handleTileClick = useCallback((x: number, y: number) => {
     console.log(`${x}, ${y} Clicked!`)
     setGrid(removeClump(grid, x, y))
-  }
+  }, [grid])
 
   const handleResetButtonClick = () => {
     setGrid(generateRandomizedGrid(props.height, props.width))
   }
 
-  return { grid, pieces, gameState, handleTileClick, handleResetButtonClick }
+  return { grid, gameState, piecesLeft, handleTileClick, handleResetButtonClick }
 }
