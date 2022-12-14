@@ -1,7 +1,8 @@
 // Type
-import { Shape, Color } from "./type"
+import { Shape } from "./types/Shape"
+import { Color } from "./types/Color"
 
 export interface Piece {
+  shape: Shape,
   color: Color,
-  shape: Shape
 }

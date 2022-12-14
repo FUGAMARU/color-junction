@@ -1,5 +1,3 @@
-export type Color = "blank" | "purple" | "yellow" | "green" | "blue"
-
 export type Shape =
   "blank" // 空欄
   | "square" // 完全な四角形

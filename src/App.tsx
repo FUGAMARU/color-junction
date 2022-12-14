@@ -7,12 +7,14 @@ import { Box, Flex, VStack, HStack } from "@chakra-ui/react"
 // Custom Components
 import Tile from "./Tile"
 
+// Type
+import { hex } from "./ts/types/Color"
+
 const App = () => {
   const height = 15
   const width = 15
 
-  const { grid, convertToHex, handleTileClick } = useColorJunction({ height: height, width: width })
-
+  const { grid, handleTileClick } = useColorJunction({ height: height, width: width })
 
   return (
     <Box>
@@ -26,13 +28,13 @@ const App = () => {
                     return (
                       <Box key={`${lineIdx},${pieceIdx}`}>
                         {lineIdx === 0 ? <Box w="16px" h="1px" bg="#e3e3e3" />
-                          : grid[lineIdx - 1][pieceIdx].color === grid[lineIdx][pieceIdx].color ? <Box w="15px" h="1px" ml="1px" bg={convertToHex(grid[lineIdx][pieceIdx].color)} />
+                          : grid[lineIdx - 1][pieceIdx].color === grid[lineIdx][pieceIdx].color ? <Box w="15px" h="1px" ml="1px" bg={hex[grid[lineIdx][pieceIdx].color]} />
                             : <Box w="16px" h="1px" bg="#e3e3e3" />}
                         <Flex>
                           {pieceIdx === 0 ? <Box w="1px" h="15px" bg="#e3e3e3" />
-                            : grid[lineIdx][pieceIdx - 1].color === grid[lineIdx][pieceIdx].color ? <Box w="1px" h="15px" bg={convertToHex(grid[lineIdx][pieceIdx].color)} />
+                            : grid[lineIdx][pieceIdx - 1].color === grid[lineIdx][pieceIdx].color ? <Box w="1px" h="15px" bg={hex[grid[lineIdx][pieceIdx].color]} />
                               : <Box w="1px" h="15px" bg="#e3e3e3" />}
-                          <Tile shape={piece.shape} color={convertToHex(piece.color)} onClick={() => handleTileClick(lineIdx, pieceIdx)} />
+                          <Tile shape={piece.shape} color={hex[piece.color]} onClick={() => handleTileClick(lineIdx, pieceIdx)} />
                         </Flex>
                       </Box>
                     )

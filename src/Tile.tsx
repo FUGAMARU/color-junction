@@ -2,7 +2,7 @@
 import { Box } from "@chakra-ui/react"
 
 // Type
-import { Shape } from "./ts/type"
+import { Shape } from "./ts/types/Shape"
 
 interface Props {
   shape: Shape,

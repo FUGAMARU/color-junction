@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react"
 
 // Type
-import { Color } from "./ts/type"
+import { Color } from "./ts/types/Color"
 
 // Interface
 import { Piece } from "./ts/interface"
@@ -41,8 +41,8 @@ export const useColorJunction = (props: Props) => {
       let x: Piece[] = [];
       [...Array(props.width)].map(() => {
         x.push({
-          color: getRandomColor(),
-          shape: "blank"
+          shape: "blank",
+          color: getRandomColor()
         })
       })
       result.push(x)
@@ -302,13 +302,12 @@ export const useColorJunction = (props: Props) => {
   }
 
   const removeClump = (currentGrid: Piece[][], sequentialTiles: number[][]) => {
-
     let localGrid = currentGrid.concat()
 
     // クリックされた塊の削除
-    sequentialTiles.forEach((val) => {
-      localGrid[val[0]][val[1]].color = "blank"
-      localGrid[val[0]][val[1]].shape = "blank"
+    sequentialTiles.forEach((tileXY) => {
+      localGrid[tileXY[0]][tileXY[1]].shape = "blank"
+      localGrid[tileXY[0]][tileXY[1]].color = "blank"
     })
 
     // blankを詰める
@@ -328,22 +327,5 @@ export const useColorJunction = (props: Props) => {
     setGrid(clumpRemovedGrid)
   }
 
-  const convertToHex = (color: Color) => {
-    switch (color) {
-      case "blank":
-        return "#e3e3e3"
-      case "purple":
-        return "#951350"
-      case "yellow":
-        return "#ff9400"
-      case "green":
-        return "#4c9000"
-      case "blue":
-        return "#0d1593"
-      default:
-        return "black"
-    }
-  }
-
-  return { grid, handleTileClick, convertToHex }
+  return { grid, handleTileClick }
 }
