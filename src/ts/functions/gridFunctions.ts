@@ -35,6 +35,11 @@ export const removeClump = (grid: Grid, x: number, y: number) => {
   return tmpGrid
 }
 
+export const getPieces = (grid: Grid) => {
+  const tmpGrid = grid.concat().flat()
+  return tmpGrid.filter(tile => tile.color !== "blank").length
+}
+
 const colorsForRandomize: Color[] = ["purple", "yellow", "green", "blue"]
 const getRandomColor = () => {
   const rand = Math.floor(Math.random() * (colorsForRandomize.length - 0))

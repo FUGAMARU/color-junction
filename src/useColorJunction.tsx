@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import { Grid } from "./ts/types/Tile"
 
 // Grid Functions
-import { generateRandomizedGrid, removeClump } from "./ts/functions/gridFunctions"
+import { generateRandomizedGrid, removeClump, getPieces } from "./ts/functions/gridFunctions"
 
 interface Props {
   height: number,
@@ -14,12 +14,14 @@ interface Props {
 
 export const useColorJunction = (props: Props) => {
   const [grid, setGrid] = useState<Grid>([])
+  const [pieces, setPieces] = useState(0)
 
   useEffect(() => {
     setGrid(generateRandomizedGrid(props.height, props.width))
   }, [])
 
   useEffect(() => {
+    setPieces(getPieces(grid))
     console.table(grid)
   }, [grid])
 
@@ -28,5 +30,5 @@ export const useColorJunction = (props: Props) => {
     setGrid(removeClump(grid, x, y))
   }
 
-  return { grid, handleTileClick }
+  return { grid, pieces, handleTileClick }
 }

@@ -18,7 +18,7 @@ const App = () => {
   const height = 15
   const width = 15
 
-  const { grid, handleTileClick } = useColorJunction({ height: height, width: width })
+  const { grid, pieces, handleTileClick } = useColorJunction({ height: height, width: width })
 
   if (grid.flat().length === height * width) {
     return (
@@ -59,7 +59,7 @@ const App = () => {
               <FontAwesomeIcon icon={faInfo} color="white" width="3.5px" height="3.5px"></FontAwesomeIcon>
             </Flex>
           </Flex>
-          <Text fontSize="12px" fontWeight="light">Pieces left: 0</Text>
+          <Text fontSize="12px" fontWeight="light">Pieces left: {pieces}</Text>
         </Flex>
       </Box>
     )
