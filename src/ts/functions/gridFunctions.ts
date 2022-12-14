@@ -1,5 +1,6 @@
 // Type
 import { Color } from "../types/Color"
+import { GameState } from "../types/GameState"
 
 // Interface
 import { Tile, Grid } from "../types/Tile"
@@ -35,9 +36,20 @@ export const removeClump = (grid: Grid, x: number, y: number) => {
   return tmpGrid
 }
 
-export const getPieces = (grid: Grid) => {
-  const tmpGrid = grid.concat().flat()
-  return tmpGrid.filter(tile => tile.color !== "blank").length
+export const getPieces = (grid: Grid) => grid.flat().filter(tile => tile.color !== "blank").length
+
+export const getGameState = (grid: Grid): GameState => {
+  const height = grid.length
+  const width = grid[0].length
+  const flatGrid = grid.flat()
+
+  const blankTiles = flatGrid.filter(tile => tile.color === "blank").length
+  if (blankTiles === height * width) return "Game Clear!"
+
+  const clumps = flatGrid.filter(tile => tile.color !== "blank" && tile.shape !== "rounded").length
+  if (clumps) return "Playing"
+
+  return "Game Over!"
 }
 
 const colorsForRandomize: Color[] = ["purple", "yellow", "green", "blue"]

@@ -18,12 +18,12 @@ const App = () => {
   const height = 15
   const width = 15
 
-  const { grid, pieces, handleTileClick } = useColorJunction({ height: height, width: width })
+  const { grid, pieces, gameState, handleTileClick } = useColorJunction({ height: height, width: width })
 
   if (grid.flat().length === height * width) {
     return (
       <Box w="fit-content">
-        <Box pt="1.5px" pb="2.5px" pl="1.5px" pr="2.5px" bg="#e3e3e3" overflow="hidden">
+        <Box pt="1.5px" pb="2.5px" pl="1.5px" pr="2.5px" position="relative" bg="#e3e3e3">
           <VStack spacing={0}>
             {grid?.map((line, lineIdx) => {
               return (
@@ -49,13 +49,19 @@ const App = () => {
               )
             })}
           </VStack>
+          {gameState !== "Playing" ?
+            <Flex h="100%" w="100%" position="absolute" top="0" left="0" justify="center" align="center" bg="whiteAlpha.700">
+              <Text fontSize="20px" fontWeight="regular" textAlign="center">{gameState}</Text>
+            </Flex>
+            : null
+          }
         </Box>
         <Flex h="20px" px="3px" justify="space-between" align="center" bg="#cccccc" borderTop="solid 1px #888888">
           <Flex align="center">
-            <Flex h="14px" w="14px" mr="1px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" >
+            <Flex h="14px" w="14px" mr="1.5px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" cursor="pointer">
               <FontAwesomeIcon icon={faRotateLeft} color="white" width="10px" height="10px"></FontAwesomeIcon>
             </Flex>
-            <Flex h="14px" w="14px" ml="1px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" >
+            <Flex h="14px" w="14px" ml="1.5px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" cursor="pointer">
               <FontAwesomeIcon icon={faInfo} color="white" width="3.5px" height="3.5px"></FontAwesomeIcon>
             </Flex>
           </Flex>

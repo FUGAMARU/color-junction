@@ -1,0 +1,1 @@
+export type GameState = "Playing" | "Game Over!" | "Game Clear!"
