@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import { Color } from "./ts/types/Color"
 
 // Interface
-import { Piece } from "./ts/interface"
+import { Tile, Grid } from "./ts/types/Tile"
 
 // Function
 import { rotateLeft, rotateRight, moveBlanksToEnd } from "./ts/function"
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const useColorJunction = (props: Props) => {
-  const [grid, setGrid] = useState<Piece[][]>([])
+  const [grid, setGrid] = useState<Grid>([])
 
   useEffect(() => {
     const coloredGrid = generateColoredGrid() // 色だけランダムに振り分けたグリッド
@@ -35,10 +35,10 @@ export const useColorJunction = (props: Props) => {
   }
 
   const generateColoredGrid = () => {
-    const result: Piece[][] = [];
+    const result: Grid = [];
 
     [...Array(props.height)].map(() => {
-      let x: Piece[] = [];
+      let x: Tile[] = [];
       [...Array(props.width)].map(() => {
         x.push({
           shape: "blank",
@@ -51,7 +51,7 @@ export const useColorJunction = (props: Props) => {
     return result
   }
 
-  const judgeShape = (currentGrid: Piece[][]) => {
+  const judgeShape = (currentGrid: Grid) => {
     const localGrid = currentGrid.concat()
     const visited = [...Array(props.height)].map(_ => Array(props.width).fill(false))
 
@@ -301,7 +301,7 @@ export const useColorJunction = (props: Props) => {
     return sequentialTiles
   }
 
-  const removeClump = (currentGrid: Piece[][], sequentialTiles: number[][]) => {
+  const removeClump = (currentGrid: Grid, sequentialTiles: number[][]) => {
     let localGrid = currentGrid.concat()
 
     // クリックされた塊の削除
