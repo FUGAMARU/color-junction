@@ -20,48 +20,52 @@ const App = () => {
 
   const { grid, handleTileClick } = useColorJunction({ height: height, width: width })
 
-  return (
-    <Box>
-      <Box w={`${18.2 * width}px`} h={`${17.2 * height}px`} p="0.2px" bg="#e3e3e3" overflow="hidden">
-        <VStack spacing={0} mt="1.5px">
-          {grid?.map((line, lineIdx) => {
-            return (
-              <HStack key={lineIdx} spacing={0}>
-                {
-                  line.map((piece, pieceIdx) => {
-                    return (
-                      <Box key={`${lineIdx},${pieceIdx}`}>
-                        {lineIdx === 0 ? <Box w="16px" h="1px" bg="#e3e3e3" />
-                          : grid[lineIdx - 1][pieceIdx].color === grid[lineIdx][pieceIdx].color ? <Box w="15px" h="1px" ml="1px" bg={hex[grid[lineIdx][pieceIdx].color]} />
-                            : <Box w="16px" h="1px" bg="#e3e3e3" />}
-                        <Flex>
-                          {pieceIdx === 0 ? <Box w="1px" h="15px" bg="#e3e3e3" />
-                            : grid[lineIdx][pieceIdx - 1].color === grid[lineIdx][pieceIdx].color ? <Box w="1px" h="15px" bg={hex[grid[lineIdx][pieceIdx].color]} />
-                              : <Box w="1px" h="15px" bg="#e3e3e3" />}
-                          <Tile shape={piece.shape} color={hex[piece.color]} onClick={() => handleTileClick(lineIdx, pieceIdx)} />
-                        </Flex>
-                      </Box>
-                    )
-                  })
-                }
-              </HStack>
-            )
-          })}
-        </VStack>
-      </Box>
-      <Flex w={`${18.2 * width}px`} h="19px" px="3px" justify="space-between" align="center" bg="#cccccc" borderTop="solid 1px #888888">
-        <Flex align="center">
-          <Flex h="14px" w="14px" mr="1px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" >
-            <FontAwesomeIcon icon={faRotateLeft} color="white" width="10px" height="10px"></FontAwesomeIcon>
+  if (grid.flat().length === height * width) {
+    return (
+      <Box w="fit-content">
+        <Box pt="1.5px" pb="2.5px" pl="1.5px" pr="2.5px" bg="#e3e3e3" overflow="hidden">
+          <VStack spacing={0}>
+            {grid?.map((line, lineIdx) => {
+              return (
+                <HStack key={lineIdx} spacing={0}>
+                  {
+                    line.map((piece, pieceIdx) => {
+                      return (
+                        <Box key={`${lineIdx},${pieceIdx}`}>
+                          {lineIdx === 0 ? <Box w="16px" h="1px" bg="#e3e3e3" />
+                            : grid[lineIdx - 1][pieceIdx].color === grid[lineIdx][pieceIdx].color ? <Box w="15px" h="1px" ml="1px" bg={hex[grid[lineIdx][pieceIdx].color]} />
+                              : <Box w="16px" h="1px" bg="#e3e3e3" />}
+                          <Flex>
+                            {pieceIdx === 0 ? <Box w="1px" h="15px" bg="#e3e3e3" />
+                              : grid[lineIdx][pieceIdx - 1].color === grid[lineIdx][pieceIdx].color ? <Box w="1px" h="15px" bg={hex[grid[lineIdx][pieceIdx].color]} />
+                                : <Box w="1px" h="15px" bg="#e3e3e3" />}
+                            <Tile shape={piece.shape} color={hex[piece.color]} onClick={() => handleTileClick(lineIdx, pieceIdx)} />
+                          </Flex>
+                        </Box>
+                      )
+                    })
+                  }
+                </HStack>
+              )
+            })}
+          </VStack>
+        </Box>
+        <Flex h="20px" px="3px" justify="space-between" align="center" bg="#cccccc" borderTop="solid 1px #888888">
+          <Flex align="center">
+            <Flex h="14px" w="14px" mr="1px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" >
+              <FontAwesomeIcon icon={faRotateLeft} color="white" width="10px" height="10px"></FontAwesomeIcon>
+            </Flex>
+            <Flex h="14px" w="14px" ml="1px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" >
+              <FontAwesomeIcon icon={faInfo} color="white" width="3.5px" height="3.5px"></FontAwesomeIcon>
+            </Flex>
           </Flex>
-          <Flex h="14px" w="14px" ml="1px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" >
-            <FontAwesomeIcon icon={faInfo} color="white" width="3.5px" height="3.5px"></FontAwesomeIcon>
-          </Flex>
+          <Text fontSize="12px" fontWeight="light">Pieces left: 0</Text>
         </Flex>
-        <Text fontSize="12px" fontWeight="light">Pieces left: 0</Text>
-      </Flex>
-    </Box>
-  )
+      </Box>
+    )
+  }
+
+  return null
 }
 
 export default App
