@@ -18,7 +18,7 @@ const App = () => {
   const height = 15
   const width = 15
 
-  const { grid, pieces, gameState, handleTileClick } = useColorJunction({ height: height, width: width })
+  const { grid, pieces, gameState, handleTileClick, handleResetButtonClick } = useColorJunction({ height: height, width: width })
 
   if (grid.flat().length === height * width) {
     return (
@@ -58,7 +58,7 @@ const App = () => {
         </Box>
         <Flex h="20px" px="3px" justify="space-between" align="center" bg="#cccccc" borderTop="solid 1px #888888">
           <Flex align="center">
-            <Flex h="14px" w="14px" mr="1.5px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" cursor="pointer">
+            <Flex h="14px" w="14px" mr="1.5px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" cursor="pointer" onClick={handleResetButtonClick} title="reset">
               <FontAwesomeIcon icon={faRotateLeft} color="white" width="10px" height="10px"></FontAwesomeIcon>
             </Flex>
             <Flex h="14px" w="14px" ml="1.5px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" cursor="pointer">

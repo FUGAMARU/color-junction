@@ -33,5 +33,9 @@ export const useColorJunction = (props: Props) => {
     setGrid(removeClump(grid, x, y))
   }
 
-  return { grid, pieces, gameState, handleTileClick }
+  const handleResetButtonClick = () => {
+    setGrid(generateRandomizedGrid(props.height, props.width))
+  }
+
+  return { grid, pieces, gameState, handleTileClick, handleResetButtonClick }
 }
