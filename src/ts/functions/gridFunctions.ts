@@ -2,11 +2,11 @@
 import { Color } from "../types/Color"
 import { GameState } from "../types/GameState"
 
-// Interface
+// Type
 import { Tile, Grid } from "../types/Tile"
 
 // Common Functions
-import { rotateLeft, rotateRight, moveBlanksToEnd, moveBlankRowsToEnd } from "./commonFunctions"
+import { rotateLeft, rotateRight, getGridSize, moveBlanksToEnd, moveBlankRowsToEnd } from "./commonFunctions"
 
 export const generateRandomizedGrid = (height: number, width: number) => {
   const coloredGrid = generateColoredGrid(height, width) // 色だけランダムに振り分けたグリッド
@@ -39,8 +39,7 @@ export const removeClump = (grid: Grid, x: number, y: number) => {
 export const getPieces = (grid: Grid) => grid.flat().filter(tile => tile.color !== "blank").length
 
 export const getGameState = (grid: Grid): GameState => {
-  const height = grid.length
-  const width = grid[0].length
+  const { height, width } = getGridSize(grid)
   const flatGrid = grid.flat()
 
   const blankTiles = flatGrid.filter(tile => tile.color === "blank").length
@@ -76,8 +75,7 @@ const generateColoredGrid = (height: number, width: number) => {
 }
 
 const judgeShape = (grid: Grid) => {
-  const height = grid.length
-  const width = grid[0].length
+  const { height, width } = getGridSize(grid)
   const tmpGrid = grid.concat()
   const visited = [...Array(height)].map(_ => Array(width).fill(false))
 
@@ -308,8 +306,7 @@ const judgeShape = (grid: Grid) => {
 }
 
 const checkSequentialTiles = (grid: Grid, initX: number, initY: number) => {
-  const height = grid.length
-  const width = grid[0].length
+  const { height, width } = getGridSize(grid)
   const visited = [...Array(height)].map(_ => Array(width).fill(false))
   const sequentialTiles: number[][] = []
   const color = grid[initX][initY].color
