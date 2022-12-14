@@ -17,23 +17,20 @@ export const generateRandomizedGrid = (height: number, width: number) => {
 export const removeClump = (grid: Grid, x: number, y: number) => {
   const sequentialTiles = checkSequentialTiles(grid, x, y) // 隣り合っているタイルの座標一覧
 
-  let tmpGrid = grid.concat()
-
   // クリックされた塊の削除
   sequentialTiles.forEach((tileXY) => {
-    tmpGrid[tileXY[0]][tileXY[1]].color = "blank"
-    tmpGrid[tileXY[0]][tileXY[1]].shape = "blank"
+    grid[tileXY[0]][tileXY[1]].color = "blank"
+    grid[tileXY[0]][tileXY[1]].shape = "blank"
   })
 
   // blankを詰める
-  const rightRotatedGrid = rotateRight(tmpGrid)
+  const rightRotatedGrid = rotateRight(grid) // グリッドの右回転
   const bottomPadded = moveBlanksToEnd(rightRotatedGrid) // 上から下に詰める
   const leftPadded = moveBlankRowsToEnd(bottomPadded) // 右から左に詰める
-  const leftRotatedGrid = rotateLeft(leftPadded)
+  const leftRotatedGrid = rotateLeft(leftPadded) // グリッドの左回転
+  const shapeJudged = judgeShape(leftRotatedGrid) // シェイプ判定
 
-  tmpGrid = judgeShape(leftRotatedGrid)
-
-  return tmpGrid
+  return shapeJudged
 }
 
 export const getPieces = (grid: Grid) => grid.flat().filter(tile => tile.color !== "blank").length
@@ -76,217 +73,216 @@ const generateColoredGrid = (height: number, width: number) => {
 
 const judgeShape = (grid: Grid) => {
   const { height, width } = getGridSize(grid)
-  const tmpGrid = grid.concat()
   const visited = [...Array(height)].map(_ => Array(width).fill(false))
 
   const dfs = (x: number, y: number) => {
     if (x < 0 || y < 0 || x > height - 1 || y > width - 1 || visited[x][y]) return
 
-    const color = tmpGrid[x][y].color
+    const color = grid[x][y].color
 
     const setShape = (x: number, y: number) => {
       // 左上
       if (x === 0 && y === 0) {
-        if (tmpGrid[x + 1][y].color === color && tmpGrid[x][y + 1].color === color) {
-          tmpGrid[x][y].shape = "topLeftRounded"
+        if (grid[x + 1][y].color === color && grid[x][y + 1].color === color) {
+          grid[x][y].shape = "topLeftRounded"
           return
-        } else if (tmpGrid[x][y + 1].color === color && tmpGrid[x + 1][y].color !== color) {
-          tmpGrid[x][y].shape = "leftRounded"
+        } else if (grid[x][y + 1].color === color && grid[x + 1][y].color !== color) {
+          grid[x][y].shape = "leftRounded"
           return
-        } else if (tmpGrid[x + 1][y].color === color && tmpGrid[x][y + 1].color !== color) {
-          tmpGrid[x][y].shape = "topRounded"
+        } else if (grid[x + 1][y].color === color && grid[x][y + 1].color !== color) {
+          grid[x][y].shape = "topRounded"
           return
         } else {
-          tmpGrid[x][y].shape = "rounded"
+          grid[x][y].shape = "rounded"
           return
         }
       }
 
       // 右下
       if (x === height - 1 && y === width - 1) {
-        if (tmpGrid[x - 1][y].color === color && tmpGrid[x][y - 1].color === color) {
-          tmpGrid[x][y].shape = "bottomRightRounded"
+        if (grid[x - 1][y].color === color && grid[x][y - 1].color === color) {
+          grid[x][y].shape = "bottomRightRounded"
           return
-        } else if (tmpGrid[x][y - 1].color === color && tmpGrid[x - 1][y].color !== color) {
-          tmpGrid[x][y].shape = "rightRounded"
+        } else if (grid[x][y - 1].color === color && grid[x - 1][y].color !== color) {
+          grid[x][y].shape = "rightRounded"
           return
-        } else if (tmpGrid[x - 1][y].color === color && tmpGrid[x][y - 1].color !== color) {
-          tmpGrid[x][y].shape = "bottomRounded"
+        } else if (grid[x - 1][y].color === color && grid[x][y - 1].color !== color) {
+          grid[x][y].shape = "bottomRounded"
           return
         } else {
-          tmpGrid[x][y].shape = "rounded"
+          grid[x][y].shape = "rounded"
           return
         }
       }
 
       // 右上
       if (x === 0 && y === width - 1) {
-        if (tmpGrid[x + 1][y].color === color && tmpGrid[x][y - 1].color === color) {
-          tmpGrid[x][y].shape = "topRightRounded"
+        if (grid[x + 1][y].color === color && grid[x][y - 1].color === color) {
+          grid[x][y].shape = "topRightRounded"
           return
-        } else if (tmpGrid[x][y - 1].color === color && tmpGrid[x + 1][y].color !== color) {
-          tmpGrid[x][y].shape = "rightRounded"
+        } else if (grid[x][y - 1].color === color && grid[x + 1][y].color !== color) {
+          grid[x][y].shape = "rightRounded"
           return
-        } else if (tmpGrid[x + 1][y].color === color && tmpGrid[x][y - 1].color !== color) {
-          tmpGrid[x][y].shape = "topRounded"
+        } else if (grid[x + 1][y].color === color && grid[x][y - 1].color !== color) {
+          grid[x][y].shape = "topRounded"
           return
         } else {
-          tmpGrid[x][y].shape = "rounded"
+          grid[x][y].shape = "rounded"
           return
         }
       }
 
       // 左下
       if (x === height - 1 && y === 0) {
-        if (tmpGrid[x - 1][y].color === color && tmpGrid[x][y + 1].color === color) {
-          tmpGrid[x][y].shape = "bottomLeftRounded"
+        if (grid[x - 1][y].color === color && grid[x][y + 1].color === color) {
+          grid[x][y].shape = "bottomLeftRounded"
           return
-        } else if (tmpGrid[x][y + 1].color === color && tmpGrid[x - 1][y].color !== color) {
-          tmpGrid[x][y].shape = "leftRounded"
+        } else if (grid[x][y + 1].color === color && grid[x - 1][y].color !== color) {
+          grid[x][y].shape = "leftRounded"
           return
-        } else if (tmpGrid[x - 1][y].color === color && tmpGrid[x][y + 1].color !== color) {
-          tmpGrid[x][y].shape = "bottomRounded"
+        } else if (grid[x - 1][y].color === color && grid[x][y + 1].color !== color) {
+          grid[x][y].shape = "bottomRounded"
           return
         } else {
-          tmpGrid[x][y].shape = "rounded"
+          grid[x][y].shape = "rounded"
           return
         }
       }
 
       // 上辺
       if (x === 0) {
-        if (tmpGrid[x][y + 1].color === color && tmpGrid[x][y - 1].color === color) {
-          tmpGrid[x][y].shape = "square"
+        if (grid[x][y + 1].color === color && grid[x][y - 1].color === color) {
+          grid[x][y].shape = "square"
           return
-        } else if (tmpGrid[x + 1][y].color === color && tmpGrid[x][y - 1].color === color) {
-          tmpGrid[x][y].shape = "topRightRounded"
+        } else if (grid[x + 1][y].color === color && grid[x][y - 1].color === color) {
+          grid[x][y].shape = "topRightRounded"
           return
-        } else if (tmpGrid[x][y + 1].color === color && tmpGrid[x + 1][y].color === color) {
-          tmpGrid[x][y].shape = "topLeftRounded"
+        } else if (grid[x][y + 1].color === color && grid[x + 1][y].color === color) {
+          grid[x][y].shape = "topLeftRounded"
           return
-        } else if (tmpGrid[x][y - 1].color === color && tmpGrid[x][y + 1].color !== color) {
-          tmpGrid[x][y].shape = "rightRounded"
+        } else if (grid[x][y - 1].color === color && grid[x][y + 1].color !== color) {
+          grid[x][y].shape = "rightRounded"
           return
-        } else if (tmpGrid[x][y + 1].color === color && tmpGrid[x][y - 1].color !== color) {
-          tmpGrid[x][y].shape = "leftRounded"
+        } else if (grid[x][y + 1].color === color && grid[x][y - 1].color !== color) {
+          grid[x][y].shape = "leftRounded"
           return
-        } else if (tmpGrid[x + 1][y].color === color) {
-          tmpGrid[x][y].shape = "topRounded"
+        } else if (grid[x + 1][y].color === color) {
+          grid[x][y].shape = "topRounded"
           return
         } else {
-          tmpGrid[x][y].shape = "rounded"
+          grid[x][y].shape = "rounded"
           return
         }
       }
 
       // 下辺
       if (x === height - 1) {
-        if (tmpGrid[x][y + 1].color === color && tmpGrid[x][y - 1].color === color) {
-          tmpGrid[x][y].shape = "square"
+        if (grid[x][y + 1].color === color && grid[x][y - 1].color === color) {
+          grid[x][y].shape = "square"
           return
-        } else if (tmpGrid[x - 1][y].color === color && tmpGrid[x][y - 1].color === color) {
-          tmpGrid[x][y].shape = "bottomRightRounded"
+        } else if (grid[x - 1][y].color === color && grid[x][y - 1].color === color) {
+          grid[x][y].shape = "bottomRightRounded"
           return
-        } else if (tmpGrid[x][y + 1].color === color && tmpGrid[x - 1][y].color === color) {
-          tmpGrid[x][y].shape = "bottomLeftRounded"
+        } else if (grid[x][y + 1].color === color && grid[x - 1][y].color === color) {
+          grid[x][y].shape = "bottomLeftRounded"
           return
-        } else if (tmpGrid[x][y - 1].color === color && tmpGrid[x][y + 1].color !== color) {
-          tmpGrid[x][y].shape = "rightRounded"
+        } else if (grid[x][y - 1].color === color && grid[x][y + 1].color !== color) {
+          grid[x][y].shape = "rightRounded"
           return
-        } else if (tmpGrid[x][y + 1].color === color && tmpGrid[x][y - 1].color !== color) {
-          tmpGrid[x][y].shape = "leftRounded"
+        } else if (grid[x][y + 1].color === color && grid[x][y - 1].color !== color) {
+          grid[x][y].shape = "leftRounded"
           return
-        } else if (tmpGrid[x - 1][y].color === color) {
-          tmpGrid[x][y].shape = "bottomRounded"
+        } else if (grid[x - 1][y].color === color) {
+          grid[x][y].shape = "bottomRounded"
           return
         } else {
-          tmpGrid[x][y].shape = "rounded"
+          grid[x][y].shape = "rounded"
           return
         }
       }
 
       // 左辺
       if (y === 0) {
-        if (tmpGrid[x + 1][y].color === color && tmpGrid[x - 1][y].color === color) {
-          tmpGrid[x][y].shape = "square"
+        if (grid[x + 1][y].color === color && grid[x - 1][y].color === color) {
+          grid[x][y].shape = "square"
           return
-        } else if (tmpGrid[x + 1][y].color === color && tmpGrid[x][y + 1].color === color) {
-          tmpGrid[x][y].shape = "topLeftRounded"
+        } else if (grid[x + 1][y].color === color && grid[x][y + 1].color === color) {
+          grid[x][y].shape = "topLeftRounded"
           return
-        } else if (tmpGrid[x][y + 1].color === color && tmpGrid[x - 1][y].color === color) {
-          tmpGrid[x][y].shape = "bottomLeftRounded"
+        } else if (grid[x][y + 1].color === color && grid[x - 1][y].color === color) {
+          grid[x][y].shape = "bottomLeftRounded"
           return
-        } else if (tmpGrid[x][y + 1].color === color) {
-          tmpGrid[x][y].shape = "leftRounded"
+        } else if (grid[x][y + 1].color === color) {
+          grid[x][y].shape = "leftRounded"
           return
-        } else if (tmpGrid[x + 1][y].color === color && tmpGrid[x - 1][y].color !== color) {
-          tmpGrid[x][y].shape = "topRounded"
+        } else if (grid[x + 1][y].color === color && grid[x - 1][y].color !== color) {
+          grid[x][y].shape = "topRounded"
           return
-        } else if (tmpGrid[x - 1][y].color === color && tmpGrid[x + 1][y].color !== color) {
-          tmpGrid[x][y].shape = "bottomRounded"
+        } else if (grid[x - 1][y].color === color && grid[x + 1][y].color !== color) {
+          grid[x][y].shape = "bottomRounded"
           return
         } else {
-          tmpGrid[x][y].shape = "rounded"
+          grid[x][y].shape = "rounded"
           return
         }
       }
 
       // 右辺
       if (y === width - 1) {
-        if (tmpGrid[x + 1][y].color === color && tmpGrid[x - 1][y].color === color) {
-          tmpGrid[x][y].shape = "square"
+        if (grid[x + 1][y].color === color && grid[x - 1][y].color === color) {
+          grid[x][y].shape = "square"
           return
-        } else if (tmpGrid[x + 1][y].color === color && tmpGrid[x][y - 1].color === color) {
-          tmpGrid[x][y].shape = "topRightRounded"
+        } else if (grid[x + 1][y].color === color && grid[x][y - 1].color === color) {
+          grid[x][y].shape = "topRightRounded"
           return
-        } else if (tmpGrid[x][y - 1].color === color && tmpGrid[x - 1][y].color === color) {
-          tmpGrid[x][y].shape = "bottomRightRounded"
+        } else if (grid[x][y - 1].color === color && grid[x - 1][y].color === color) {
+          grid[x][y].shape = "bottomRightRounded"
           return
-        } else if (tmpGrid[x][y - 1].color === color) {
-          tmpGrid[x][y].shape = "rightRounded"
+        } else if (grid[x][y - 1].color === color) {
+          grid[x][y].shape = "rightRounded"
           return
-        } else if (tmpGrid[x + 1][y].color === color && tmpGrid[x - 1][y].color !== color) {
-          tmpGrid[x][y].shape = "topRounded"
+        } else if (grid[x + 1][y].color === color && grid[x - 1][y].color !== color) {
+          grid[x][y].shape = "topRounded"
           return
-        } else if (tmpGrid[x - 1][y].color === color && tmpGrid[x + 1][y].color !== color) {
-          tmpGrid[x][y].shape = "bottomRounded"
+        } else if (grid[x - 1][y].color === color && grid[x + 1][y].color !== color) {
+          grid[x][y].shape = "bottomRounded"
           return
         } else {
-          tmpGrid[x][y].shape = "rounded"
+          grid[x][y].shape = "rounded"
           return
         }
       }
 
       // その他
-      if ((tmpGrid[x + 1][y].color === color && tmpGrid[x - 1][y].color === color) || (tmpGrid[x][y + 1].color === color && tmpGrid[x][y - 1].color === color)) {
-        tmpGrid[x][y].shape = "square"
+      if ((grid[x + 1][y].color === color && grid[x - 1][y].color === color) || (grid[x][y + 1].color === color && grid[x][y - 1].color === color)) {
+        grid[x][y].shape = "square"
         return
-      } else if (tmpGrid[x - 1][y].color === color && tmpGrid[x][y - 1].color === color && tmpGrid[x + 1][y].color !== color && tmpGrid[x][y + 1].color !== color) {
-        tmpGrid[x][y].shape = "bottomRightRounded"
+      } else if (grid[x - 1][y].color === color && grid[x][y - 1].color === color && grid[x + 1][y].color !== color && grid[x][y + 1].color !== color) {
+        grid[x][y].shape = "bottomRightRounded"
         return
-      } else if (tmpGrid[x - 1][y].color === color && tmpGrid[x][y + 1].color === color && tmpGrid[x + 1][y].color !== color && tmpGrid[x][y - 1].color !== color) {
-        tmpGrid[x][y].shape = "bottomLeftRounded"
+      } else if (grid[x - 1][y].color === color && grid[x][y + 1].color === color && grid[x + 1][y].color !== color && grid[x][y - 1].color !== color) {
+        grid[x][y].shape = "bottomLeftRounded"
         return
-      } else if (tmpGrid[x + 1][y].color === color && tmpGrid[x][y - 1].color === color && tmpGrid[x - 1][y].color !== color && tmpGrid[x][y + 1].color !== color) {
-        tmpGrid[x][y].shape = "topRightRounded"
+      } else if (grid[x + 1][y].color === color && grid[x][y - 1].color === color && grid[x - 1][y].color !== color && grid[x][y + 1].color !== color) {
+        grid[x][y].shape = "topRightRounded"
         return
-      } else if (tmpGrid[x + 1][y].color === color && tmpGrid[x][y + 1].color === color && tmpGrid[x - 1][y].color !== color && tmpGrid[x][y - 1].color !== color) {
-        tmpGrid[x][y].shape = "topLeftRounded"
+      } else if (grid[x + 1][y].color === color && grid[x][y + 1].color === color && grid[x - 1][y].color !== color && grid[x][y - 1].color !== color) {
+        grid[x][y].shape = "topLeftRounded"
         return
-      } else if (tmpGrid[x][y - 1].color === color && tmpGrid[x][y + 1].color !== color && tmpGrid[x + 1][y].color !== color && tmpGrid[x - 1][y].color !== color) {
-        tmpGrid[x][y].shape = "rightRounded"
+      } else if (grid[x][y - 1].color === color && grid[x][y + 1].color !== color && grid[x + 1][y].color !== color && grid[x - 1][y].color !== color) {
+        grid[x][y].shape = "rightRounded"
         return
-      } else if (tmpGrid[x][y + 1].color === color && tmpGrid[x][y - 1].color !== color && tmpGrid[x + 1][y].color !== color && tmpGrid[x - 1][y].color !== color) {
-        tmpGrid[x][y].shape = "leftRounded"
+      } else if (grid[x][y + 1].color === color && grid[x][y - 1].color !== color && grid[x + 1][y].color !== color && grid[x - 1][y].color !== color) {
+        grid[x][y].shape = "leftRounded"
         return
-      } else if (tmpGrid[x - 1][y].color === color && tmpGrid[x][y + 1].color !== color && tmpGrid[x + 1][y].color !== color && tmpGrid[x][y - 1].color !== color) {
-        tmpGrid[x][y].shape = "bottomRounded"
+      } else if (grid[x - 1][y].color === color && grid[x][y + 1].color !== color && grid[x + 1][y].color !== color && grid[x][y - 1].color !== color) {
+        grid[x][y].shape = "bottomRounded"
         return
-      } else if (tmpGrid[x + 1][y].color === color && tmpGrid[x][y + 1].color !== color && tmpGrid[x - 1][y].color !== color && tmpGrid[x][y - 1].color !== color) {
-        tmpGrid[x][y].shape = "topRounded"
+      } else if (grid[x + 1][y].color === color && grid[x][y + 1].color !== color && grid[x - 1][y].color !== color && grid[x][y - 1].color !== color) {
+        grid[x][y].shape = "topRounded"
         return
       } else {
-        tmpGrid[x][y].shape = "rounded"
+        grid[x][y].shape = "rounded"
         return
       }
     }
@@ -302,7 +298,7 @@ const judgeShape = (grid: Grid) => {
 
   dfs(0, 0)
 
-  return tmpGrid
+  return grid
 }
 
 const checkSequentialTiles = (grid: Grid, initX: number, initY: number) => {
