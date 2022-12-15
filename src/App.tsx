@@ -25,7 +25,7 @@ const App = () => {
 
   if (grid.flat().length === height * width) {
     return (
-      <Box w="fit-content">
+      <Box w="fit-content" style={{ WebkitTapHighlightColor: "rgba(0, 0, 0 ,0)" }}>
         <Box pt="1.5px" pb="2.5px" pl="1.5px" pr="2.5px" position="relative" bg="#e3e3e3">
           <Grid grid={grid} handleTileClick={handleTileClick} />
           {
