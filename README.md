@@ -7,6 +7,7 @@ Using React, the mini-game "Color Junction" that was playable on [iGoogle](https
 
 When two or more pieces of the same color are connected, they stick together to form a clump.
 When you click on a clump, it disappears.
+
 The game is completed when there are no pieces left.  
 Simple, right?
 
@@ -28,7 +29,7 @@ Parameters
 Example: `https://fugamaru.com/projects/ColorJunction/?height=10&width=20`
 
 ## How to Build
-If you want to host this project on your own server, etc., please do the build yourself (generate static HTML files).
+If you want to host this project on your own server, etc., please do the build yourself (generate static files).
 
 1. Install the libraries
 ```bash
@@ -37,11 +38,11 @@ yarn install
 ```
 
 2. Customize `basename` attribute
-> If you will put static HTML files in the server's root directory, you do not need to do this.
+> If you will put static files in the server's root directory, you do not need to do this.
 
 Open `src/index.tsx` and enter the path to the subdirectory in the `basename` attribute of the `BrowserRouter` component.
 
-Example of URL: `https://fugamaru.com/projects/ColorJunction/`
+Example of URL: `https://fugamaru.com/projects/ColorJunction/`  
 Example: `<BrowserRouter basename="/projects/ColorJunction/">`
 
 3. Execute build
