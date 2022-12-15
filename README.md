@@ -1,46 +1,52 @@
-# Getting Started with Create React App
+# <img src="https://user-images.githubusercontent.com/7829486/207825273-2d544b4d-c4ed-4c7d-a321-5e7f727287ac.png" height="100" />
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Using React, the mini-game "Color Junction" that was playable on [iGoogle](https://wikipedia.org/wiki/IGoogle) which ended in 2013, was revived in 2022.
 
-## Available Scripts
+## How to Play
+![game screen](https://user-images.githubusercontent.com/7829486/207826926-604ba0d5-f4f9-43ca-ae12-9530ad55e186.png)
 
-In the project directory, you can run:
+When two or more pieces of the same color are connected, they stick together to form a clump.
+When you click on a clump, it disappears.
+The game is completed when there are no pieces left.  
+Simple, right?
 
-### `yarn start`
+## Live Demo
+[Click here to play the game](https://fugamaru.com/projects/ColorJunction/)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+> You may paste an iframe of this URL into your website so that you can play the game on your website, but the URL is subject to change without notice.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Specifying Grid Size
+You can change the grid size by specifying the URL parameter.
+> If the grid size is too small, the layout may be corrupted; conversely, if it is too large, it may take longer to process.
 
-### `yarn test`
+Parameters
+| Property | Default |
+| :---: | :---: |
+| height | 15 |
+| width | 15 |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Example: `https://fugamaru.com/projects/ColorJunction/?height=10&width=20`
 
-### `yarn build`
+## How to Build
+If you want to host this project on your own server, etc., please do the build yourself (generate static HTML files).
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Install the libraries
+```bash
+# If yarn is not installed -> npm i -g yarn
+yarn install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Customize `basename` attribute
+> If you will put static HTML files in the server's root directory, you do not need to do this.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Open `src/index.tsx` and enter the path to the subdirectory in the `basename` attribute of the `BrowserRouter` component.
 
-### `yarn eject`
+Example of URL: `https://fugamaru.com/projects/ColorJunction/`
+Example: `<BrowserRouter basename="/projects/ColorJunction/">`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+3. Execute build
+```bash
+yarn build
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+When the build is complete, a `build` directory is created in the project root, then copy these files to the server.
