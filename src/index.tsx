@@ -10,7 +10,7 @@ const root = ReactDOM.createRoot(
 )
 root.render(
   <ChakraProvider>
-    <BrowserRouter>
+    <BrowserRouter basename="/">
       <Routes>
         <Route path={`/`} element={<App />} />
       </Routes>
