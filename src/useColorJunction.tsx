@@ -25,6 +25,7 @@ export const useColorJunction = (props: Props) => {
   }, [])
 
   const handleTileClick = useCallback((x: number, y: number) => {
+    if (grid[x][y].color === "blank") return
     console.log(`${x}, ${y} Clicked!`)
     setGrid(removeClump(grid, x, y))
   }, [grid])
