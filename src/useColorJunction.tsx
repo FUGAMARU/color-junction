@@ -26,7 +26,7 @@ export const useColorJunction = (props: Props) => {
 
   useEffect(() => {
     setGrid(generateRandomizedGrid(props.height, props.width))
-  }, [])
+  }, [props.height, props.width])
 
   useEffect(() => {
     if (props.debug) console.table(grid)
@@ -36,7 +36,7 @@ export const useColorJunction = (props: Props) => {
     if (grid[x][y].color === "blank") return
     if (props.debug) console.log(`${x}, ${y} Clicked!`)
     setGrid(removeClump(grid, x, y))
-  }, [grid])
+  }, [grid, props.debug])
 
   const handleResetButtonClick = () => {
     setGrid(generateRandomizedGrid(props.height, props.width))
