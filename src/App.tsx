@@ -1,3 +1,6 @@
+// React Hooks
+import { useMemo } from "react"
+
 // Custom Hooks
 import { useColorJunction } from "./useColorJunction"
 
@@ -7,27 +10,39 @@ import { Box, Flex, Text, useDisclosure } from "@chakra-ui/react"
 // Custom Components
 import Grid from "./Grid"
 
+// Library
+import { useLocation } from "react-router-dom"
+
 // Font Awesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faRotateLeft, faInfo } from "@fortawesome/free-solid-svg-icons"
+
+// Common Functions
+import { notifyRendering } from "./ts/functions/commonFunctions"
+
+// Type
+import { Parameter } from "./ts/types/Parameter"
 
 const Button = (props: { onClick: VoidFunction, children: string }) => <Box width="fit-content" mx="auto" my="5px" px="2px" fontSize="0.7rem" _hover={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }} cursor="pointer" onClick={props.onClick}>{props.children}</Box>
 const Link = (props: { url: string, children: string }) => <Box as="span" textDecoration="underline" _hover={{ color: "#cb94e3" }}><a href={props.url} target="_blank" rel="noopener noreferrer">{props.children}</a></Box>
 
 const App = () => {
-  console.log("%cApp.tsx", "color:white; border:solid 1px #0188d1; padding:1px 4px; border-radius:4px;", "Rendered")
+  const { search } = useLocation()
+  const params = useMemo(() => new URLSearchParams(search), [search])
+  const height = useMemo(() => Number(params.get("height" as Parameter)) || 15, [params])
+  const width = useMemo(() => Number(params.get("width" as Parameter)) || 15, [params])
+  const debug = useMemo(() => params.has("debug" as Parameter) ? (params.get("debug" as Parameter) as string).toLowerCase() === "true" : false, [params])
 
-  const height = 15
-  const width = 15
+  if (debug) notifyRendering("App")
 
-  const { grid, gameState, piecesLeft, handleTileClick, handleResetButtonClick } = useColorJunction({ height: height, width: width })
+  const { grid, gameState, piecesLeft, handleTileClick, handleResetButtonClick } = useColorJunction({ height: height, width: width, debug: debug })
   const { isOpen: isInfoOpen, onOpen: openInfo, onClose: closeInfo } = useDisclosure()
 
   if (grid.flat().length === height * width) {
     return (
       <Box w="fit-content" style={{ WebkitTapHighlightColor: "rgba(0, 0, 0 ,0)" }}>
         <Box pt="1.5px" pb="2.5px" pl="1.5px" pr="2.5px" position="relative" bg="#e3e3e3">
-          <Grid grid={grid} handleTileClick={handleTileClick} />
+          <Grid grid={grid} handleTileClick={handleTileClick} debug={debug} />
           {
             gameState !== "Playing" && !!!isInfoOpen ?
               <Flex h="100%" w="100%" position="absolute" top="0" left="0" flexDirection="column" justify="center" align="center" bg="whiteAlpha.800">

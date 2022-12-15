@@ -7,17 +7,21 @@ import { Box, Flex, VStack, HStack } from "@chakra-ui/react"
 // Custom Components
 import Tile from "./Tile"
 
+// Common Functions
+import { notifyRendering } from "./ts/functions/commonFunctions"
+
 // Type
 import { hex } from "./ts/types/Color"
 import { Grid } from "./ts/types/Tile"
 
 interface Props {
   grid: Grid,
-  handleTileClick: (x: number, y: number) => void
+  handleTileClick: (x: number, y: number) => void,
+  debug: boolean
 }
 
-const GridElement: FC<Props> = ({ grid, handleTileClick }) => {
-  console.log("%cGrid.tsx", "color:white; border:solid 1px #0188d1; padding:1px 4px; border-radius:4px;", "Rendered")
+const GridElement: FC<Props> = ({ grid, handleTileClick, debug }) => {
+  if (debug) notifyRendering("Grid")
 
   return (
     <VStack spacing={0}>
@@ -27,7 +31,6 @@ const GridElement: FC<Props> = ({ grid, handleTileClick }) => {
             <HStack key={lineIdx} spacing={0}>
               {
                 line.map((piece, pieceIdx) => {
-                  console.log("Grid Rendering...")
                   return (
                     <Box key={`${lineIdx},${pieceIdx}`}>
                       {
@@ -41,7 +44,7 @@ const GridElement: FC<Props> = ({ grid, handleTileClick }) => {
                             : grid[lineIdx][pieceIdx - 1].color === grid[lineIdx][pieceIdx].color ? <Box w="1px" h="15px" bg={hex[grid[lineIdx][pieceIdx].color]} />
                               : <Box w="1px" h="15px" bg="#e3e3e3" />
                         }
-                        <Tile shape={piece.shape} color={hex[piece.color]} onClick={() => handleTileClick(lineIdx, pieceIdx)} />
+                        <Tile shape={piece.shape} color={hex[piece.color]} onClick={() => handleTileClick(lineIdx, pieceIdx)} debug={debug} />
                       </Flex>
                     </Box>
                   )

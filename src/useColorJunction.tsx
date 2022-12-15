@@ -8,13 +8,17 @@ import { GameState } from "./ts/types/GameState"
 // Grid Functions
 import { generateRandomizedGrid, removeClump, getGameState, getPieces } from "./ts/functions/gridFunctions"
 
+// Common Functions
+import { notifyRendering } from "./ts/functions/commonFunctions"
+
 interface Props {
   height: number,
-  width: number
+  width: number,
+  debug: boolean
 }
 
 export const useColorJunction = (props: Props) => {
-  console.log("%cuseColorJunction.tsx", "color:white; border:solid 1px #0188d1; padding:1px 4px; border-radius:4px;", "Rendered")
+  if (props.debug) notifyRendering("useColorJunction")
 
   const [grid, setGrid] = useState<Grid>([])
   const gameState = useMemo<GameState>(() => getGameState(grid), [grid])
@@ -24,9 +28,13 @@ export const useColorJunction = (props: Props) => {
     setGrid(generateRandomizedGrid(props.height, props.width))
   }, [])
 
+  useEffect(() => {
+    if (props.debug) console.table(grid)
+  }, [grid, props.debug])
+
   const handleTileClick = useCallback((x: number, y: number) => {
     if (grid[x][y].color === "blank") return
-    console.log(`${x}, ${y} Clicked!`)
+    if (props.debug) console.log(`${x}, ${y} Clicked!`)
     setGrid(removeClump(grid, x, y))
   }, [grid])
 

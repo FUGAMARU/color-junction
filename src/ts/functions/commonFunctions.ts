@@ -27,3 +27,5 @@ export const moveBlankRowsToEnd = (grid: Grid) => {
 
   return grid
 }
+
+export const notifyRendering = (componentName: string) => console.log(`%c${componentName}.tsx`, "color:white; border:solid 1px #0188d1; padding:1px 4px; border-radius:4px;", "Rendered")

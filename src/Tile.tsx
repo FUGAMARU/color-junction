@@ -4,14 +4,18 @@ import { Box } from "@chakra-ui/react"
 // Type
 import { Shape } from "./ts/types/Shape"
 
+// Common Functions
+import { notifyRendering } from "./ts/functions/commonFunctions"
+
 interface Props {
   shape: Shape,
   color: string,
-  onClick?: VoidFunction
+  onClick?: VoidFunction,
+  debug: boolean
 }
 
 const Tile = (props: Props) => {
-  console.log("%cTile.tsx", "color:white; border:solid 1px #0188d1; padding:1px 4px; border-radius:4px;", "Rendered")
+  if (props.debug) notifyRendering("Tile")
 
   switch (props.shape) {
     case "blank":

@@ -1,0 +1,1 @@
+export type Parameter = "height" | "width" | "debug"
