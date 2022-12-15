@@ -50,3 +50,6 @@ yarn build
 ```
 
 When the build is complete, a `build` directory is created in the project root, then copy these files to the server.
+
+## License
+This project is released under the MIT License, see LICENSE file.
