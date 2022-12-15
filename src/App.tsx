@@ -53,9 +53,9 @@ const App = () => {
           }
           {
             isInfoOpen ?
-              <Box h="100%" w="100%" p="5px" position="absolute" top="0" left="0" textAlign="center" bg="whiteAlpha.800" overflow="scroll" onClick={closeInfo}>
+              <Box h="100%" w="100%" p="5px" position="absolute" top="0" left="0" textAlign="center" bg="whiteAlpha.800" overflowX="hidden" overflowY="auto" onClick={closeInfo}>
                 <Text fontSize="1.25rem" fontWeight="semibold">Color Junction</Text>
-                <Box fontSize="0.8rem" lineHeight="18px">
+                <Box fontSize="0.8rem" lineHeight="17px">
                   <Text>This game is played by erasing clumps of two or more pieces of the same color attached to each other, and the game is completed when all the pieces are finally erased.</Text>
                   <Text>Using React, the mini-game "Color Junction" that was playable on <Link url="https://en.wikipedia.org/wiki/IGoogle">iGoogle</Link> which ended in 2013, was revived in 2022.</Text>
                   <Text>Developer: <Link url="https://fugamaru.com/">FUGAMARU</Link></Text>
