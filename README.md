@@ -14,7 +14,9 @@ Simple, right?
 ## Live Demo
 [Click here to play the game](https://fugamaru.com/projects/ColorJunction/)
 
-> You may paste an iframe of this URL into your website so that you can play the game on your website, but the URL is subject to change without notice.
+> You may paste an iframe of this URL into your website so that you can play the game on your website, but the URL is subject to change without notice.  
+For example, I have embedded this game in the sidebar of [my blog](https://dagashi.pw/) using the following iframe tag.  
+`<iframe src="https://fugamaru.com/projects/ColorJunction/" height="264" width="244" frameborder="0" />`
 
 ## Specifying Grid Size
 You can change the grid size by specifying the URL parameter.
