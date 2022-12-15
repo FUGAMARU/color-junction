@@ -47,7 +47,7 @@ const App = () => {
             gameState !== "Playing" && !!!isInfoOpen ?
               <Flex h="100%" w="100%" position="absolute" top="0" left="0" flexDirection="column" justify="center" align="center" bg="whiteAlpha.800">
                 <Text fontSize="1.25rem" fontWeight="regular" textAlign="center">{gameState}</Text>
-                <Button onClick={handleResetButtonClick}>Click to retry</Button>
+                <Button onClick={handleResetButtonClick}>Click here to retry</Button>
               </Flex>
               : null
           }
@@ -67,10 +67,10 @@ const App = () => {
         </Box>
         <Flex h="20px" px="3px" justify="space-between" align="center" bg="#cccccc" borderTop="solid 1px #888888" onClick={() => { if (isInfoOpen) closeInfo() }}>
           <Flex align="center">
-            <Flex h="14px" w="14px" mr="1.5px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" cursor="pointer" onClick={handleResetButtonClick} title="reset">
+            <Flex h="14px" w="14px" mr="1.5px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" cursor="pointer" onClick={handleResetButtonClick} title="Reset">
               <FontAwesomeIcon icon={faRotateLeft} color="white" width="10px" height="10px"></FontAwesomeIcon>
             </Flex>
-            <Flex h="14px" w="14px" ml="1.5px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" cursor="pointer" onClick={openInfo} title="info">
+            <Flex h="14px" w="14px" ml="1.5px" justify="center" align="center" bg="#9e9e9e" borderRadius="50%" cursor="pointer" onClick={openInfo} title="Info">
               <FontAwesomeIcon icon={faInfo} color="white" width="3.5px" height="3.5px"></FontAwesomeIcon>
             </Flex>
           </Flex>
