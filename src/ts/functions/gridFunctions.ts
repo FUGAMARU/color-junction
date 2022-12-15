@@ -15,9 +15,8 @@ export const generateRandomizedGrid = (height: number, width: number) => {
 }
 
 export const removeClump = (grid: Grid, x: number, y: number) => {
-  const sequentialTiles = checkSequentialTiles(grid, x, y) // 隣り合っているタイルの座標一覧
-
   // クリックされた塊の削除
+  const sequentialTiles = getSequentialTiles(grid, x, y) // 隣り合っているタイルの座標一覧
   sequentialTiles.forEach((tileXY) => {
     grid[tileXY[0]][tileXY[1]].color = "blank"
     grid[tileXY[0]][tileXY[1]].shape = "blank"
@@ -51,17 +50,14 @@ export const getGameState = (grid: Grid): GameState => {
 export const getPieces = (grid: Grid) => grid.length ? grid.flat().filter(tile => tile.color !== "blank").length : 0
 
 const colorsForRandomize: Color[] = ["purple", "yellow", "green", "blue"]
-const getRandomColor = () => {
-  const rand = Math.floor(Math.random() * (colorsForRandomize.length - 0))
-  return colorsForRandomize[rand]
-}
+const getRandomColor = () => colorsForRandomize[Math.floor(Math.random() * (colorsForRandomize.length - 0))]
 
 const generateColoredGrid = (height: number, width: number) => {
   const result: Grid = [];
 
-  [...Array(height)].map(() => {
+  [...Array(height)].forEach(() => {
     let x: Tile[] = [];
-    [...Array(width)].map(() => {
+    [...Array(width)].forEach(() => {
       x.push({
         color: getRandomColor(),
         shape: "blank",
@@ -303,7 +299,7 @@ const judgeShape = (grid: Grid) => {
   return grid
 }
 
-const checkSequentialTiles = (grid: Grid, initX: number, initY: number) => {
+const getSequentialTiles = (grid: Grid, initX: number, initY: number) => {
   const { height, width } = getGridSize(grid)
   const visited = [...Array(height)].map(_ => Array(width).fill(false))
   const sequentialTiles: number[][] = []
