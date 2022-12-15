@@ -11,7 +11,7 @@ import Grid from "./Grid"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faRotateLeft, faInfo } from "@fortawesome/free-solid-svg-icons"
 
-const Button = (props: { onClick: VoidFunction, children: string }) => <Box width="fit-content" mx="auto" my="5px" px="2px" fontSize="5px" _hover={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }} cursor="pointer" onClick={props.onClick}>{props.children}</Box>
+const Button = (props: { onClick: VoidFunction, children: string }) => <Box width="fit-content" mx="auto" my="5px" px="2px" fontSize="0.7rem" _hover={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }} cursor="pointer" onClick={props.onClick}>{props.children}</Box>
 const Link = (props: { url: string, children: string }) => <Box as="span" textDecoration="underline" _hover={{ color: "#cb94e3" }}><a href={props.url} target="_blank" rel="noopener noreferrer">{props.children}</a></Box>
 
 const App = () => {
@@ -31,7 +31,7 @@ const App = () => {
           {
             gameState !== "Playing" && !!!isInfoOpen ?
               <Flex h="100%" w="100%" position="absolute" top="0" left="0" flexDirection="column" justify="center" align="center" bg="whiteAlpha.800">
-                <Text fontSize="20px" fontWeight="regular" textAlign="center">{gameState}</Text>
+                <Text fontSize="1.25rem" fontWeight="regular" textAlign="center">{gameState}</Text>
                 <Button onClick={handleResetButtonClick}>Click to retry</Button>
               </Flex>
               : null
@@ -39,8 +39,8 @@ const App = () => {
           {
             isInfoOpen ?
               <Box h="100%" w="100%" p="5px" position="absolute" top="0" left="0" textAlign="center" bg="whiteAlpha.800" overflow="scroll" onClick={closeInfo}>
-                <Text fontSize="20px" fontWeight="semibold">Color Junction</Text>
-                <Box fontSize="13px" lineHeight="18px">
+                <Text fontSize="1.25rem" fontWeight="semibold">Color Junction</Text>
+                <Box fontSize="0.8rem" lineHeight="18px">
                   <Text>This game is played by erasing clumps of two or more pieces of the same color attached to each other, and the game is completed when all the pieces are finally erased.</Text>
                   <Text>Using React, the mini-game "Color Junction" that was playable on <Link url="https://en.wikipedia.org/wiki/IGoogle">iGoogle</Link> which ended in 2013, was revived in 2022.</Text>
                   <Text>Developer: <Link url="https://fugamaru.com/">FUGAMARU</Link></Text>
@@ -59,7 +59,7 @@ const App = () => {
               <FontAwesomeIcon icon={faInfo} color="white" width="3.5px" height="3.5px"></FontAwesomeIcon>
             </Flex>
           </Flex>
-          <Text fontSize="12px" fontWeight="light">Pieces left: {piecesLeft}</Text>
+          <Text fontSize="0.7rem" fontWeight="light">Pieces left: {piecesLeft}</Text>
         </Flex>
       </Box>
     )
