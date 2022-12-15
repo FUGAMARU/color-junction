@@ -6,12 +6,12 @@ import { GameState } from "../types/GameState"
 import { Tile, Grid } from "../types/Tile"
 
 // Common Functions
-import { rotateLeft, rotateRight, getGridSize, moveBlanksToEnd, moveBlankRowsToEnd } from "./commonFunctions"
+import { getGridSize, squeezeGrid } from "./commonFunctions"
 
 export const generateRandomizedGrid = (height: number, width: number) => {
-  const coloredGrid = generateColoredGrid(height, width) // 色だけランダムに振り分けたグリッド
-  const randomizedGrid = judgeShape(coloredGrid) // 色の配置に合わせて形情報を付与したグリッド
-  return randomizedGrid
+  const colored = generateColoredGrid(height, width) // 色だけランダムに振り分けたグリッド
+  const randomized = judgeShape(colored) // 色の配置に合わせて形情報を付与したグリッド
+  return randomized
 }
 
 export const removeClump = (grid: Grid, x: number, y: number) => {
@@ -23,11 +23,10 @@ export const removeClump = (grid: Grid, x: number, y: number) => {
   })
 
   // blankを詰める
-  const rightRotatedGrid = rotateRight(grid) // グリッドの右回転
-  const bottomPadded = moveBlanksToEnd(rightRotatedGrid) // 上から下に詰める
-  const leftPadded = moveBlankRowsToEnd(bottomPadded) // 右から左に詰める
-  const leftRotatedGrid = rotateLeft(leftPadded) // グリッドの左回転
-  const shapeJudged = judgeShape(leftRotatedGrid) // シェイプ判定
+  const squeezed = squeezeGrid(grid)
+
+  // シェイプ判定
+  const shapeJudged = judgeShape(squeezed)
 
   return shapeJudged
 }
