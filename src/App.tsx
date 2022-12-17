@@ -1,5 +1,5 @@
 // React Hooks
-import { useMemo } from "react"
+import { useMemo, useEffect } from "react"
 
 // Custom Hooks
 import { useColorJunction } from "./useColorJunction"
@@ -10,8 +10,9 @@ import { Box, Flex, Text, useDisclosure } from "@chakra-ui/react"
 // Custom Components
 import Grid from "./Grid"
 
-// Library
+// Libraries
 import { useLocation } from "react-router-dom"
+import { useReward } from "react-rewards"
 
 // Font Awesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -37,6 +38,14 @@ const App = () => {
 
   const { grid, gameState, piecesLeft, handleTileClick, handleResetButtonClick } = useColorJunction({ height: height, width: width, debug: debug })
   const { isOpen: isInfoOpen, onOpen: openInfo, onClose: closeInfo } = useDisclosure()
+  const { reward } = useReward("rewardId", "confetti", {
+    lifetime: 200,
+    elementCount: 100,
+    elementSize: 10,
+    colors: ["#951350", "#ff9400", "#4c9000", "#0d1593"]
+  })
+
+  useEffect(() => { if (gameState === "Game Clear!") reward() }, [gameState])
 
   if (grid.flat().length === height * width) {
     return (
@@ -45,15 +54,16 @@ const App = () => {
           <Grid grid={grid} handleTileClick={handleTileClick} debug={debug} />
           {
             gameState !== "Playing" && !!!isInfoOpen ?
-              <Flex h="100%" w="100%" position="absolute" top="0" left="0" flexDirection="column" justify="center" align="center" bg="whiteAlpha.800">
+              <Flex h="100%" w="100%" position="absolute" top={0} left={0} flexDirection="column" justify="center" align="center" bg="whiteAlpha.800">
                 <Text fontSize="1.25rem" fontWeight="regular" textAlign="center">{gameState}</Text>
                 <Button onClick={handleResetButtonClick}>Click here to retry</Button>
+                <Box id="rewardId" position="absolute" bottom={0}></Box>
               </Flex>
               : null
           }
           {
             isInfoOpen ?
-              <Box h="100%" w="100%" p="5px" position="absolute" top="0" left="0" textAlign="center" bg="whiteAlpha.800" overflowX="hidden" overflowY="auto" onClick={closeInfo}>
+              <Box h="100%" w="100%" p="5px" position="absolute" top={0} left={0} textAlign="center" bg="whiteAlpha.800" overflowX="hidden" overflowY="auto" onClick={closeInfo}>
                 <Text fontSize="1.25rem" fontWeight="semibold">Color Junction</Text>
                 <Box fontSize="0.8rem" lineHeight="17px">
                   <Text>This game is played by erasing clumps of two or more pieces of the same color attached to each other, and the game is completed when all the pieces are finally erased.</Text>
